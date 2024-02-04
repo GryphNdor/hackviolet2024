@@ -30,12 +30,12 @@ export function App() {
   const [ref, inView] = useInView()
   return (
     <>
-        <nav>
-        <span>check</span>
-        <span>check</span>
-        <span>check</span>
-        </nav>
-      <div ref={ref} className={styles.wrapper}>
+      <nav>
+          <a href="http://127.0.0.1:8000/" className={styles.tryNowLink}>Try Now</a>
+      </nav>
+
+
+      <div ref={ref} className={styles.wrapper}>  
         <Parallax ref={parallax} pages={3}>
           <ParallaxLayer className={styles.heroContainer}
             offset={0}
@@ -46,7 +46,9 @@ export function App() {
                   <span>Sound</span>
                 </Trail>
               <h2>Hear Danger First</h2>
-              <button>Try Now</button>
+                <a href="http://127.0.0.1:8000/">
+                  <button className={styles.tryNowButton}>Try Now</button>
+                </a>
               </div>
             <img className={styles.hero} src="/night.svg"/>
           </ParallaxLayer>
@@ -55,11 +57,9 @@ export function App() {
             offset={1}
             speed={0.4}>
 
-            <h1>HOnk</h1>
-
             <div>
-              <div className={styles.card} style={{backgroundColor:"#EF798A"}}>
-                <h1>test</h1>
+              <div className={styles.card}>
+                <h1>PTSD Stat 1 BLAH BLAH ABLSDFKJA;SLDKFJA ;SLDKFJA ;SLDKFJ A;SLDKJF;KSLDJFA</h1>
               </div>
             </div>
 
@@ -69,7 +69,7 @@ export function App() {
           <ParallaxLayer style={{backgroundColor: "lightblue", borderRadius:"50px 50px 0% 0%"}}
             offset={2}
             speed={0.1}>
-            <h1>HOnk2</h1>
+            <h1 className={styles.footer}>PTSD Stat 2 BLAH BLAH ABLSDFKJA;SLDKFJA ;SLDKFJA ;SLDKFJ A;SLDKJF;KSLDJFA</h1>
           </ParallaxLayer>
         </Parallax>
       </div>

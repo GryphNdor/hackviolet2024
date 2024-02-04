@@ -58,6 +58,8 @@ nav > span {
   height: 500px;
   border-radius: 50px;
   background-color: white;
+  /* text color */
+  padding: 80px;
 }
 
 .container {
@@ -77,4 +79,33 @@ nav > span {
 .hero {
   width: 40%;
   min-width: 300px;
+}
+
+.tryNowLink {
+  color: inherit; /* Inherit text color */
+  text-decoration: none; /* Remove underline */
+}
+
+.tryNowButton {
+  background-color: white; /* Sets the button background to white */
+  color: #393939; /* Sets the button text color to a dark shade for contrast */
+  border: 2px solid white; /* Defines the border; adjust color as needed */
+  border-radius: 20px; /* Gives the button rounded corners */
+  padding: 10px 30px; /* Adjusts the padding inside the button for size */
+  font-weight: bold; /* Makes the button text bold */
+  cursor: pointer; /* Changes the cursor to indicate the element is clickable */
+  text-transform: uppercase; /* Optional: makes the text uppercase for style */
+  font-size: 16px; /* Adjusts the font size */
+  transition: all 0.3s ease; /* Adds a smooth transition effect on hover */
+  outline: none; /* Removes the outline to keep the style clean */
+}
+
+.tryNowButton:hover {
+  background-color: #f0f0f0; /* Lightens the button on hover for interaction feedback */
+  color: #000; /* Optional: changes text color on hover for contrast */
+  border-color: #ddd; /* Optional: changes border color on hover */
+}
+
+.footer {
+  padding: 80px;
 }
