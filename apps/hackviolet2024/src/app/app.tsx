@@ -59,7 +59,7 @@ export function App() {
 
             <div>
               <div className={styles.card}>
-                <h1>PTSD Stat 1 BLAH BLAH ABLSDFKJA;SLDKFJA ;SLDKFJA ;SLDKFJ A;SLDKJF;KSLDJFA</h1>
+                <h1>About 8 of every 100 women (or 8%) and 4 of every 100 men (or 4%) will have PTSD at some point in their life.</h1>
               </div>
             </div>
 
@@ -69,7 +69,7 @@ export function App() {
           <ParallaxLayer style={{backgroundColor: "lightblue", borderRadius:"50px 50px 0% 0%"}}
             offset={2}
             speed={0.1}>
-            <h1 className={styles.footer}>PTSD Stat 2 BLAH BLAH ABLSDFKJA;SLDKFJA ;SLDKFJA ;SLDKFJ A;SLDKJF;KSLDJFA</h1>
+            <h1 className={styles.footer}>Up to 65% of women report experiencing verbal harassment in public spaces, a statistic that underscores the pervasive issue of unsolicited and often distressing auditory encounters (Journal of Environmental Psychology, 2020).</h1>
           </ParallaxLayer>
         </Parallax>
       </div>
