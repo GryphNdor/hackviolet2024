@@ -6,4 +6,3 @@ client = OpenAI()
 # client = OpenAI(
 #   api_key=os.environ.get("CUSTOM_ENV_NAME"),
 # )
-setx OPENAI_API_KEY "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"

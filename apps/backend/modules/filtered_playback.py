@@ -174,7 +174,7 @@ def start_recording(playback_queue, playback_lock, trigger, keywords, client, mo
     print("Recording complete. Check the output directory for audio files.")
 
 
-def run(trigger, keywords, client, debug=False, ):
+def run(trigger, keywords, client, debug=False):
     if debug:
         print('Running in debug mode')
         print('CUDA available:', torch.cuda.is_available())
