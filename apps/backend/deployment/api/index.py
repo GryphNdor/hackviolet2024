@@ -22,6 +22,10 @@ def home():
 def generate():
     data = request.json
     topic = data.get('topic')
+
+    # Save topic
+    with open(os.path.join(tempfile.gettempdir(), 'topic.txt'), 'w') as file:
+        file.write(topic)
     
     prompt = "Generate a list of 20 related words for: " + topic + ". For each word in the list, \
         generate its plural form as well. These entries should not be mapped to each other, but \
@@ -34,6 +38,7 @@ def generate():
         response = get_completion(client, prompt)
         response_object = json.loads(response)
 
+        # Save response
         with open(os.path.join(tempfile.gettempdir(), 'response.json'), 'w') as file:
             json.dump(response_object, file, indent=4)
 
@@ -47,6 +52,12 @@ def generate():
 @app.route('/get-json', methods=['GET'])
 def get_json():
     return send_file(os.path.join(tempfile.gettempdir(), 'response.json'), as_attachment=True)
+
+
+# Retrieve topic
+@app.route('/get-topic', methods=['GET'])
+def get_topic():
+    return send_file(os.path.join(tempfile.gettempdir(), 'topic.txt'), as_attachment=True)
 
 
 # Run application
