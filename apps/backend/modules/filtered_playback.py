@@ -3,18 +3,14 @@ import speech_recognition as sr
 import torch
 import wave
 import pyaudio
-
 from datetime import datetime, timedelta
 from queue import Queue
 from time import sleep
 from sys import platform
 import string
-
 from faster_whisper import WhisperModel
-
 from threading import Thread, Lock
 from queue import Queue
-
 import threading
 
 def playback_thread_func(playback_stream, playback_queue, playback_lock):
@@ -51,7 +47,16 @@ def apply_fade(audio_np, fade_in_start, fade_in_end, fade_out_start, fade_out_en
     
     return audio_np
 
-def start_recording(playback_queue, playback_lock, keywords, model='medium', non_english='false', energy_threshold=690, record_timeout=1, phrase_timeout=1, default_microphone='pulse', output_filename='output_audio.wav'):
+def get_completion(prompt, client, model="gpt-3.5-turbo"): 
+    messages = [{"role": "user", "content": prompt}]
+    response = client.chat.completions.create(
+        model=model,
+        messages=messages,
+        temperature=0.5,
+    )
+    return response.choices[0].message.content
+
+def start_recording(playback_queue, playback_lock, trigger, keywords, client, model='medium', non_english='false', energy_threshold=690, record_timeout=1, phrase_timeout=1, default_microphone='pulse', output_filename='output_audio.wav'):
     phrase_time = None
     data_queue = Queue()
     recorder = sr.Recognizer()
@@ -99,7 +104,9 @@ def start_recording(playback_queue, playback_lock, keywords, model='medium', non
 
     print("Model loaded and recording to", output_filename)
 
-
+    rolling_average = 0
+    semantic_chunk = ""
+    
     while True:
         try:
             now = datetime.utcnow()
@@ -128,6 +135,8 @@ def start_recording(playback_queue, playback_lock, keywords, model='medium', non
                 for segment in segments:
                     print("[%.2fs -> %.2fs] %s" % (segment.start, segment.end, segment.text))
                     
+                    semantic_chunk += segment.text + " "
+                    
                     text_arr = [word.lower().strip(string.punctuation) for word in segment.text.split()]
                     
                     found_word = False
@@ -135,13 +144,21 @@ def start_recording(playback_queue, playback_lock, keywords, model='medium', non
                         if word in keywords:
                             found_word = True
                             break
+                    
+                print('rolling average', rolling_average)
  
-                if not found_word:
-                    # play_audio_in_background(audio_data, playback_stream)
-                    # playback_stream.write(audio_data)
+                if not found_word and rolling_average < 0.7:
                     enqueue_audio_for_playback(audio_data, playback_queue, playback_lock)
-
-                # Infinite loops are bad for processors, must sleep.
+                
+                if len(semantic_chunk) >= 32:
+                    prompt = f'{semantic_chunk}\n\nDoes the above text contain mentions of {trigger}? Strictly output either "yes" or "no".'
+                    response = get_completion(prompt, client)
+                    print('GPT RESPONSE', response)
+                    semantic_chunk = ""
+                    alpha = 0.67
+                    value = 1 if response.lower().strip(string.punctuation) == 'yes' else 0
+                    rolling_average = alpha * value + (1 - alpha) * rolling_average
+                    
                 sleep(0.05)
         except KeyboardInterrupt:
             break
@@ -157,7 +174,7 @@ def start_recording(playback_queue, playback_lock, keywords, model='medium', non
     print("Recording complete. Check the output directory for audio files.")
 
 
-def run(keywords, debug=False):
+def run(trigger, keywords, client, debug=False, ):
     if debug:
         print('Running in debug mode')
         print('CUDA available:', torch.cuda.is_available())
@@ -166,4 +183,4 @@ def run(keywords, debug=False):
     playback_queue = Queue()
     playback_lock = Lock()
     
-    start_recording(playback_queue, playback_lock, keywords)
+    start_recording(playback_queue, playback_lock, trigger, keywords, client)
