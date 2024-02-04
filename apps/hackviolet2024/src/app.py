@@ -8,12 +8,17 @@ app = Dash(__name__)
 
 # Define the layout of the Dash app with system-ui font and rounded corners for the input
 app.layout = html.Div([
+    
     html.Div([
+        html.H1(
+            children=["Safe", html.Br(), "Sound"],  # Using html.Br() to create a line break between "Safe" and "Sound"
+            style={'textAlign': 'center', 'color': 'white', 'marginTop': '10vh', 'font-size': '9em', 'line-height': '120px', 'font-family': 'system-ui', 'letter-spacing': '-0.05em', 'font-weight': '900'}  # Center text and place it at the top with a margin
+        ),
         dcc.Input(
             id='input-topic',
             type='text',
             placeholder='Enter a topic...',
-            style={'width': '60%', 'height': '40px', 'fontSize': '20px', 'textAlign': 'center', 'fontFamily': 'system-ui', 'fontWeight': 'bold', 'overflow': 'hidden', 'borderRadius': '20px'}  # Added borderRadius property
+            style={'width': '60%', 'height': '40px', 'fontSize': '20px', 'textAlign': 'center', 'fontFamily': 'system-ui', 'fontWeight': 'bold', 'overflow': 'hidden', 'borderRadius': '20px'}
         ),
         html.Button(
             'Submit',
@@ -21,7 +26,7 @@ app.layout = html.Div([
             n_clicks=0,
             style={'width': '10%', 'height': '46px', 'fontSize': '20px', 'marginLeft': '5px', 'fontFamily': 'system-ui', 'fontWeight': 'bold', 'borderRadius': '20px'}
         )
-    ], style={'textAlign': 'center', 'marginTop': '20%', 'fontFamily': 'system-ui'}),
+    ], style={'textAlign': 'center', 'marginTop': '5%', 'fontFamily': 'system-ui'}),
     html.Div(id='output-container-button', children='Enter a topic and press play',
              style={'textAlign': 'center', 'marginTop': '20px', 'fontSize': '20px', 'fontFamily': 'system-ui', 'fontWeight': 'bold', 'color': 'white'})
 ], style={'background-image': 'linear-gradient(#272727, #9198e5)',
@@ -31,6 +36,7 @@ app.layout = html.Div([
           'left': '0',
           'top': '0',
           'fontFamily': 'system-ui'})
+
 
 # Example callback that makes an HTTP POST request to the Flask route
 @app.callback(
